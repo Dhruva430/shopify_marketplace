@@ -1,0 +1,133 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "layout": "split",
+        "image_asset": "hero.jpg",
+        "eyebrow": "Clean clinical skincare",
+        "heading": "Skin that speaks for itself",
+        "subheading": "High-performance actives, transparent formulas, and a routine your skin will thank you for.",
+        "button_text": "Shop the routine",
+        "button_link": "shopify://collections/all",
+        "button_text_2": "Build your bundle",
+        "button_link_2": "shopify://products/the-complete-routine-kit",
+        "badge_value": "4.8 / 5",
+        "badge_label": "12,400+ happy customers"
+      }
+    },
+    "trust": {
+      "type": "trust-badges",
+      "blocks": {
+        "b1": { "type": "badge", "settings": { "icon": "truck", "title": "Free shipping", "text": "On orders over $50" } },
+        "b2": { "type": "badge", "settings": { "icon": "return", "title": "30-day returns", "text": "Money-back guarantee" } },
+        "b3": { "type": "badge", "settings": { "icon": "leaf", "title": "Clean & vegan", "text": "Cruelty-free formulas" } },
+        "b4": { "type": "badge", "settings": { "icon": "lock", "title": "Secure checkout", "text": "SSL encrypted payments" } }
+      },
+      "block_order": ["b1", "b2", "b3", "b4"]
+    },
+    "collections": {
+      "type": "featured-collections",
+      "settings": {
+        "eyebrow": "Shop by concern",
+        "heading": "Targeted care for every skin goal",
+        "subheading": "Find your match — whether you’re after hydration, glow, or barrier repair."
+      },
+      "blocks": {
+        "c1": { "type": "collection", "settings": { "collection": "hydration", "title": "Hydration", "subtitle": "Plump & quench" } },
+        "c2": { "type": "collection", "settings": { "collection": "brightening", "title": "Brightening", "subtitle": "Even & glow" } },
+        "c3": { "type": "collection", "settings": { "collection": "barrier-repair", "title": "Barrier repair", "subtitle": "Calm & protect" } }
+      },
+      "block_order": ["c1", "c2", "c3"]
+    },
+    "bestsellers": {
+      "type": "featured-products",
+      "settings": {
+        "eyebrow": "Best sellers",
+        "heading": "Loved by skin like yours",
+        "subheading": "Our most-reviewed formulas, chosen again and again.",
+        "collection": "best-sellers",
+        "limit": 4,
+        "button_text": "Shop all products",
+        "button_link": "shopify://collections/all"
+      }
+    },
+    "benefits": {
+      "type": "benefits",
+      "settings": { "eyebrow": "Why Aurelle", "heading": "Skincare you can trust" },
+      "blocks": {
+        "x1": { "type": "benefit", "settings": { "icon": "flask", "title": "Proven actives", "text": "Clinically-backed ingredients at effective concentrations." } },
+        "x2": { "type": "benefit", "settings": { "icon": "rabbit", "title": "Cruelty-free", "text": "Never tested on animals. Leaping Bunny certified." } },
+        "x3": { "type": "benefit", "settings": { "icon": "leaf", "title": "Clean formulas", "text": "Free from parabens, sulfates & synthetic fragrance." } },
+        "x4": { "type": "benefit", "settings": { "icon": "shield", "title": "Derm tested", "text": "Gentle on sensitive skin, suitable for daily use." } }
+      },
+      "block_order": ["x1", "x2", "x3", "x4"]
+    },
+    "highlight": {
+      "type": "image-with-text",
+      "settings": {
+        "media_position": "left",
+        "background": "default",
+        "image_asset": "serum.jpg",
+        "eyebrow": "The hero product",
+        "heading": "Meet the serum doing the heavy lifting",
+        "text": "<p>A weightless blend of hyaluronic acid and niacinamide that floods skin with moisture and visibly smooths in two weeks.</p>",
+        "button_text": "Shop the serum",
+        "button_link": "shopify://products/hydrating-hyaluronic-serum"
+      },
+      "blocks": {
+        "f1": { "type": "feature", "settings": { "text": "Hydrates for up to 72 hours" } },
+        "f2": { "type": "feature", "settings": { "text": "Fragrance-free, for sensitive skin" } },
+        "f3": { "type": "feature", "settings": { "text": "Vegan & cruelty-free" } }
+      },
+      "block_order": ["f1", "f2", "f3"]
+    },
+    "bundle": {
+      "type": "bundle-promo",
+      "settings": {
+        "product": "the-complete-routine-kit",
+        "eyebrow": "Build a routine, save more",
+        "heading": "The Complete Routine Kit",
+        "text": "Cleanser, serum and moisturiser — everything your skin needs, morning and night, at one bundled price.",
+        "price": "$89",
+        "compare": "$112",
+        "save": "Save 20%",
+        "button_text": "Shop the bundle",
+        "button_link": "shopify://products/the-complete-routine-kit"
+      }
+    },
+    "story": {
+      "type": "image-with-text",
+      "settings": {
+        "media_position": "right",
+        "background": "sage",
+        "image_asset": "story.jpg",
+        "eyebrow": "Our story",
+        "heading": "Clean science, made personal",
+        "text": "<p>Aurelle was born from a simple belief: effective skincare shouldn’t mean a 12-step routine or a list of ingredients you can’t pronounce. We formulate with proven actives, clean standards, and full transparency — so you always know what you’re putting on your skin.</p>",
+        "button_text": "About us",
+        "button_link": "shopify://pages/about"
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "settings": { "eyebrow": "Real reviews", "heading": "Skin stories from our community" },
+      "blocks": {
+        "t1": { "type": "review", "settings": { "quote": "Two weeks in and my texture is visibly smoother. Worth every penny.", "name": "Priya S.", "role": "Verified buyer · Combination skin" } },
+        "t2": { "type": "review", "settings": { "quote": "Finally a clean brand that actually works. The glow is real.", "name": "Daniel M.", "role": "Verified buyer · Dry skin" } },
+        "t3": { "type": "review", "settings": { "quote": "Gentle enough for my sensitive skin and zero irritation. Obsessed.", "name": "Aisha R.", "role": "Verified buyer · Sensitive skin" } }
+      },
+      "block_order": ["t1", "t2", "t3"]
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "eyebrow": "Join the glow list",
+        "heading": "Get 10% off your first order",
+        "text": "Sign up for skincare tips, new launches and members-only offers.",
+        "button_text": "Sign me up"
+      }
+    }
+  },
+  "order": ["hero", "trust", "collections", "bestsellers", "benefits", "highlight", "bundle", "story", "testimonials", "newsletter"]
+}

@@ -1,0 +1,38 @@
+{
+  "sections": {
+    "hero": {
+      "type": "main-page",
+      "settings": { "eyebrow": "Our story" }
+    },
+    "values": {
+      "type": "image-with-text",
+      "settings": {
+        "media_position": "right",
+        "background": "cream",
+        "eyebrow": "What we stand for",
+        "heading": "Effective, honest, and kind to skin",
+        "text": "<p>Every Aurelle formula is built around three rules: prove it works, keep it clean, and tell the truth on the label. No fillers, no fear-mongering, no 12-step routines.</p>",
+        "button_text": "Shop the range",
+        "button_link": "shopify://collections/all"
+      },
+      "blocks": {
+        "f1": { "type": "feature", "settings": { "text": "Clinically-backed actives" } },
+        "f2": { "type": "feature", "settings": { "text": "Clean, vegan & cruelty-free" } },
+        "f3": { "type": "feature", "settings": { "text": "Full ingredient transparency" } }
+      },
+      "block_order": ["f1", "f2", "f3"]
+    },
+    "benefits": {
+      "type": "benefits",
+      "settings": { "eyebrow": "Our promise", "heading": "Skincare you can trust" },
+      "blocks": {
+        "x1": { "type": "benefit", "settings": { "icon": "flask", "title": "Proven actives", "text": "Effective concentrations, backed by science." } },
+        "x2": { "type": "benefit", "settings": { "icon": "rabbit", "title": "Cruelty-free", "text": "Leaping Bunny certified." } },
+        "x3": { "type": "benefit", "settings": { "icon": "leaf", "title": "Clean formulas", "text": "No parabens, sulfates or synthetic fragrance." } },
+        "x4": { "type": "benefit", "settings": { "icon": "sprout", "title": "Sustainable", "text": "Recyclable packaging, refills coming soon." } }
+      },
+      "block_order": ["x1", "x2", "x3", "x4"]
+    }
+  },
+  "order": ["hero", "values", "benefits"]
+}

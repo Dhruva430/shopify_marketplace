@@ -1,0 +1,41 @@
+<section class="section--tight section">
+  <div class="page-width">
+    <div class="trust">
+      {%- for block in section.blocks -%}
+        <div class="trust__item" {{ block.shopify_attributes }}>
+          {% render 'icon', name: block.settings.icon %}
+          <div><strong>{{ block.settings.title }}</strong><span>{{ block.settings.text }}</span></div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Trust badges",
+  "max_blocks": 4,
+  "blocks": [
+    { "type": "badge", "name": "Badge", "settings": [
+      { "type": "select", "id": "icon", "label": "Icon", "options": [
+        { "value": "truck", "label": "Shipping" },
+        { "value": "return", "label": "Returns" },
+        { "value": "lock", "label": "Secure" },
+        { "value": "leaf", "label": "Clean" },
+        { "value": "shield", "label": "Guarantee" }
+      ], "default": "truck" },
+      { "type": "text", "id": "title", "label": "Title", "default": "Free shipping" },
+      { "type": "text", "id": "text", "label": "Text", "default": "On orders over $50" }
+    ]}
+  ],
+  "presets": [{
+    "name": "Trust badges",
+    "blocks": [
+      { "type": "badge", "settings": { "icon": "truck", "title": "Free shipping", "text": "On orders over $50" } },
+      { "type": "badge", "settings": { "icon": "return", "title": "30-day returns", "text": "Money-back guarantee" } },
+      { "type": "badge", "settings": { "icon": "leaf", "title": "Clean & vegan", "text": "Cruelty-free formulas" } },
+      { "type": "badge", "settings": { "icon": "lock", "title": "Secure checkout", "text": "SSL encrypted payments" } }
+    ]
+  }]
+}
+{% endschema %}

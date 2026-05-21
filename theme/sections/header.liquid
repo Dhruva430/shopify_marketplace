@@ -1,0 +1,60 @@
+<script>
+  window.AURELLE = {
+    moneyFormat: {{ shop.money_format | json }},
+    cartType: {{ settings.cart_type | json }},
+    freeShip: 5000
+  };
+</script>
+
+<header class="header" data-header>
+  <div class="header__inner">
+    <button class="icon-btn header__burger" data-mobile-open aria-label="Open menu">{% render 'icon', name: 'menu' %}</button>
+
+    <nav class="header__nav" aria-label="Primary">
+      {%- for link in section.settings.menu.links limit: 5 -%}
+        <a href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>{{ link.title }}</a>
+      {%- endfor -%}
+    </nav>
+
+    <a href="{{ routes.root_url }}" class="header__logo">
+      {%- if settings.logo != blank -%}
+        <img src="{{ settings.logo | image_url: width: 480 }}" width="{{ settings.logo_width }}" height="60"
+             style="width:{{ settings.logo_width }}px;height:auto" alt="{{ shop.name }}">
+      {%- else -%}
+        {{ settings.brand_name | default: shop.name }}
+      {%- endif -%}
+    </a>
+
+    <div class="header__actions">
+      <a href="{{ routes.search_url }}" class="icon-btn" aria-label="Search">{% render 'icon', name: 'search' %}</a>
+      <a href="{{ routes.account_url }}" class="icon-btn" aria-label="Account">{% render 'icon', name: 'account' %}</a>
+      <a href="{{ routes.cart_url }}" class="icon-btn" data-open-cart aria-label="Cart">
+        {% render 'icon', name: 'cart' %}
+        <span class="cart-count" data-cart-count {% if cart.item_count == 0 %}style="display:none"{% endif %}>{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-nav" data-mobile-nav>
+  <div class="mobile-nav__head">
+    <span class="header__logo" style="font-size:1.4rem">{{ settings.brand_name | default: shop.name }}</span>
+    <button class="icon-btn" data-mobile-close aria-label="Close menu">{% render 'icon', name: 'close' %}</button>
+  </div>
+  {%- for link in section.settings.menu.links -%}
+    <a href="{{ link.url }}" data-mobile-close>{{ link.title }}</a>
+  {%- endfor -%}
+  <div style="margin-top:24px;display:flex;gap:14px">
+    <a href="{{ routes.account_url }}" class="link-arrow">Account</a>
+    <a href="{{ routes.search_url }}" class="link-arrow">Search</a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" }
+  ]
+}
+{% endschema %}

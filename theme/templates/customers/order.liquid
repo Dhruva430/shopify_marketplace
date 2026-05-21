@@ -1,0 +1,18 @@
+<section class="section"><div class="page-width">
+  <p class="eyebrow">Order {{ order.name }}</p>
+  <h1>Placed {{ order.created_at | date: '%B %d, %Y' }}</h1>
+  <table style="width:100%;border-collapse:collapse;margin-top:18px">
+    <thead><tr style="text-align:left;border-bottom:1px solid rgba(43,38,34,.15)"><th style="padding:10px 0">Product</th><th>Qty</th><th>Total</th></tr></thead>
+    <tbody>
+      {%- for line in order.line_items -%}
+        <tr style="border-bottom:1px solid rgba(43,38,34,.08)"><td style="padding:12px 0">{{ line.title }}</td><td>{{ line.quantity }}</td><td>{{ line.final_line_price | money }}</td></tr>
+      {%- endfor -%}
+    </tbody>
+    <tfoot>
+      <tr><td colspan="2" style="padding-top:12px">Subtotal</td><td>{{ order.line_items_subtotal_price | money }}</td></tr>
+      <tr><td colspan="2">Shipping</td><td>{{ order.shipping_price | money }}</td></tr>
+      <tr><td colspan="2"><strong>Total</strong></td><td><strong>{{ order.total_price | money }}</strong></td></tr>
+    </tfoot>
+  </table>
+  <p style="margin-top:18px"><a href="{{ routes.account_url }}" style="text-decoration:underline">← Back to account</a></p>
+</div></section>

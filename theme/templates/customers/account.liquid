@@ -1,0 +1,39 @@
+<section class="section"><div class="page-width">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:24px">
+    <div><p class="eyebrow">My account</p><h1 style="margin:0">Hi {{ customer.first_name | default: 'there' }}</h1></div>
+    <a href="{{ routes.account_logout_url }}" class="button button--outline button--sm">Log out</a>
+  </div>
+  <div class="cart-layout">
+    <div>
+      <h3>Order history</h3>
+      {%- paginate customer.orders by 10 -%}
+        {%- if customer.orders.size > 0 -%}
+          <table style="width:100%;border-collapse:collapse">
+            <thead><tr style="text-align:left;border-bottom:1px solid rgba(43,38,34,.15)"><th style="padding:10px 0">Order</th><th>Date</th><th>Total</th><th>Status</th></tr></thead>
+            <tbody>
+              {%- for order in customer.orders -%}
+                <tr style="border-bottom:1px solid rgba(43,38,34,.08)">
+                  <td style="padding:12px 0"><a href="{{ order.customer_url }}" style="text-decoration:underline">{{ order.name }}</a></td>
+                  <td>{{ order.created_at | date: '%b %d, %Y' }}</td>
+                  <td>{{ order.total_price | money }}</td>
+                  <td>{{ order.financial_status_label }}</td>
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+        {%- else -%}
+          <p style="color:var(--color-muted)">You haven’t placed any orders yet.</p>
+        {%- endif -%}
+      {%- endpaginate -%}
+    </div>
+    <aside class="cart-summary">
+      <h3 style="margin-top:0">Address</h3>
+      {%- if customer.default_address -%}
+        <p style="font-size:.92rem">{{ customer.default_address | format_address }}</p>
+      {%- else -%}
+        <p style="color:var(--color-muted);font-size:.92rem">No address on file.</p>
+      {%- endif -%}
+      <a href="{{ routes.account_addresses_url }}" class="button button--outline button--full button--sm">Manage addresses</a>
+    </aside>
+  </div>
+</div></section>

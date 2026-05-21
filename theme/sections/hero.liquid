@@ -1,0 +1,85 @@
+{%- liquid
+  assign s = section.settings
+  assign img_src = ''
+  if s.image != blank
+    assign img_src = s.image | image_url: width: 1600
+  elsif s.image_asset != blank
+    assign img_src = s.image_asset | asset_url
+  endif
+-%}
+{%- if s.layout == 'overlay' -%}
+  <section class="hero hero--overlay">
+    <div class="hero__bg">
+      {%- if img_src != blank -%}
+        <img src="{{ img_src }}" alt="{{ s.image.alt | escape | default: s.heading }}" width="2000" height="1100" fetchpriority="high">
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder' }}
+      {%- endif -%}
+    </div>
+    <div class="page-width">
+      <div class="hero__content">
+        {%- if s.eyebrow != blank -%}<p class="eyebrow" style="color:#fff;opacity:.85">{{ s.eyebrow }}</p>{%- endif -%}
+        <h1>{{ s.heading }}</h1>
+        {%- if s.subheading != blank -%}<p class="lede">{{ s.subheading }}</p>{%- endif -%}
+        <div class="hero__cta">
+          {%- if s.button_text != blank -%}<a href="{{ s.button_link }}" class="button button--primary button--lg">{{ s.button_text }}</a>{%- endif -%}
+          {%- if s.button_text_2 != blank -%}<a href="{{ s.button_link_2 }}" class="button button--ghost button--lg">{{ s.button_text_2 }}</a>{%- endif -%}
+        </div>
+      </div>
+    </div>
+  </section>
+{%- else -%}
+  <section class="hero">
+    <div class="page-width">
+      <div class="hero__grid">
+        <div class="hero__content">
+          {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+          <h1>{{ s.heading }}</h1>
+          {%- if s.subheading != blank -%}<p class="lede">{{ s.subheading }}</p>{%- endif -%}
+          <div class="hero__cta">
+            {%- if s.button_text != blank -%}<a href="{{ s.button_link }}" class="button button--primary button--lg">{{ s.button_text }}</a>{%- endif -%}
+            {%- if s.button_text_2 != blank -%}<a href="{{ s.button_link_2 }}" class="button button--outline button--lg">{{ s.button_text_2 }}</a>{%- endif -%}
+          </div>
+        </div>
+        <div class="hero__media">
+          {%- if img_src != blank -%}
+            <img src="{{ img_src }}" alt="{{ s.image.alt | escape | default: s.heading }}" width="1200" height="1500" fetchpriority="high">
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder' }}
+          {%- endif -%}
+          {%- if s.badge_value != blank -%}
+            <div class="hero__badge">
+              <span class="stars" aria-hidden="true">{% render 'icon', name: 'star' %}{% render 'icon', name: 'star' %}{% render 'icon', name: 'star' %}{% render 'icon', name: 'star' %}{% render 'icon', name: 'star' %}</span>
+              <div><strong>{{ s.badge_value }}</strong><span>{{ s.badge_label }}</span></div>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    { "type": "select", "id": "layout", "label": "Layout", "options": [
+      { "value": "split", "label": "Split (image beside text)" },
+      { "value": "overlay", "label": "Full-width with overlay" }
+    ], "default": "split" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "image_asset", "label": "Image asset fallback", "info": "Filename in /assets, e.g. hero.jpg (used if no image picked)" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Clean clinical skincare" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Skin that speaks for itself" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "High-performance actives, transparent formulas, and a routine your skin will thank you for." },
+    { "type": "text", "id": "button_text", "label": "Primary button", "default": "Shop the routine" },
+    { "type": "url", "id": "button_link", "label": "Primary link" },
+    { "type": "text", "id": "button_text_2", "label": "Secondary button", "default": "Build your bundle" },
+    { "type": "url", "id": "button_link_2", "label": "Secondary link" },
+    { "type": "header", "content": "Floating badge" },
+    { "type": "text", "id": "badge_value", "label": "Value", "default": "4.8 / 5" },
+    { "type": "text", "id": "badge_label", "label": "Label", "default": "12,400+ happy customers" }
+  ],
+  "presets": [{ "name": "Hero" }]
+}
+{% endschema %}

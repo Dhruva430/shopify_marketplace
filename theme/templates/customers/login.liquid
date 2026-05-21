@@ -1,0 +1,24 @@
+<section class="section"><div class="page-width" style="max-width:480px">
+  <div class="text-center" style="margin-bottom:24px"><p class="eyebrow">Welcome back</p><h1>Log in</h1></div>
+
+  <div id="recover" style="display:none">
+    <h3>Reset your password</h3>
+    {%- form 'recover_customer_password', class: 'contact-form' -%}
+      {% if form.posted_successfully? %}<p class="form-success">We’ve sent you an email with a link to reset your password.</p>{% endif %}
+      <div><label>Email</label><input type="email" name="email" required></div>
+      <button type="submit" class="button button--primary">Send reset link</button>
+      <a href="#login" onclick="document.getElementById('recover').style.display='none';document.getElementById('login').style.display='block';return false">Back to login</a>
+    {%- endform -%}
+  </div>
+
+  <div id="login">
+    {%- form 'customer_login', class: 'contact-form' -%}
+      {{ form.errors | default_errors }}
+      <div><label>Email</label><input type="email" name="customer[email]" required></div>
+      <div><label>Password</label><input type="password" name="customer[password]" required></div>
+      <button type="submit" class="button button--primary">Sign in</button>
+      <a href="#recover" onclick="document.getElementById('login').style.display='none';document.getElementById('recover').style.display='block';return false">Forgot your password?</a>
+    {%- endform -%}
+    <p style="margin-top:18px">New here? <a href="{{ routes.account_register_url }}" style="text-decoration:underline">Create an account</a></p>
+  </div>
+</div></section>

@@ -1,0 +1,12 @@
+<section class="section"><div class="page-width" style="max-width:480px">
+  <div class="text-center" style="margin-bottom:24px"><p class="eyebrow">Join Aurelle</p><h1>Create account</h1></div>
+  {%- form 'create_customer', class: 'contact-form' -%}
+    {{ form.errors | default_errors }}
+    <div><label>First name</label><input type="text" name="customer[first_name]"></div>
+    <div><label>Last name</label><input type="text" name="customer[last_name]"></div>
+    <div><label>Email</label><input type="email" name="customer[email]" required></div>
+    <div><label>Password</label><input type="password" name="customer[password]" required></div>
+    <button type="submit" class="button button--primary">Create account</button>
+  {%- endform -%}
+  <p style="margin-top:18px">Already have an account? <a href="{{ routes.account_login_url }}" style="text-decoration:underline">Log in</a></p>
+</div></section>

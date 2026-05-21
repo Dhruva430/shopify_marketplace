@@ -1,0 +1,49 @@
+{%- liquid
+  assign s = section.settings
+  assign product = s.product
+-%}
+<section class="section">
+  <div class="page-width">
+    <div class="bundle">
+      <div class="bundle__media">
+        {%- if s.image != blank -%}
+          <img src="{{ s.image | image_url: width: 1200 }}" alt="{{ s.image.alt | escape }}" width="1200" height="900" loading="lazy">
+        {%- elsif product.featured_image != blank -%}
+          <img src="{{ product.featured_image | image_url: width: 1200 }}" alt="{{ product.title }}" width="1200" height="900" loading="lazy">
+        {%- else -%}
+          {{ 'product-3' | placeholder_svg_tag: 'placeholder' }}
+        {%- endif -%}
+      </div>
+      <div>
+        {%- if s.eyebrow != blank -%}<p class="eyebrow" style="color:var(--color-secondary)">{{ s.eyebrow }}</p>{%- endif -%}
+        <h2>{{ s.heading }}</h2>
+        <p style="opacity:.85">{{ s.text }}</p>
+        <div class="bundle__price">
+          <span class="now">{{ s.price | default: '$89' }}</span>
+          {%- if s.compare != blank -%}<span class="was">{{ s.compare }}</span>{%- endif -%}
+          {%- if s.save != blank -%}<span class="save">{{ s.save }}</span>{%- endif -%}
+        </div>
+        <a href="{{ s.button_link | default: product.url | default: '#' }}" class="button button--primary button--lg">{{ s.button_text | default: 'Shop the bundle' }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bundle promo",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Bundle product" },
+    { "type": "image_picker", "id": "image", "label": "Override image" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Build a routine, save more" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The Complete Routine Kit" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Cleanser, serum and moisturiser — everything your skin needs, morning and night, at one bundled price." },
+    { "type": "text", "id": "price", "label": "Bundle price", "default": "$89" },
+    { "type": "text", "id": "compare", "label": "Compare price", "default": "$112" },
+    { "type": "text", "id": "save", "label": "Save badge", "default": "Save 20%" },
+    { "type": "text", "id": "button_text", "label": "Button label", "default": "Shop the bundle" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "Bundle promo" }]
+}
+{% endschema %}

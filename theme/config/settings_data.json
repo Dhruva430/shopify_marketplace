@@ -1,0 +1,39 @@
+{
+  "current": {
+    "color_background": "#F6F1EA",
+    "color_text": "#2B2622",
+    "color_muted": "#8C857C",
+    "color_secondary_bg": "#EFE7DB",
+    "color_secondary": "#9CAF95",
+    "color_secondary_soft": "#DCE3D6",
+    "color_accent": "#BD6B4C",
+    "color_accent_dark": "#A1573B",
+    "color_accent_text": "#FFFFFF",
+    "color_footer_bg": "#2B2622",
+    "color_footer_text": "#EFE7DB",
+    "page_width": 1300,
+    "section_spacing": 88,
+    "card_radius": 14,
+    "brand_name": "Aurelle",
+    "logo_width": 140,
+    "card_image_ratio": "portrait",
+    "show_vendor": false,
+    "show_rating": true,
+    "cart_type": "drawer",
+    "show_sticky_atc": true,
+    "enable_cart_note": true,
+    "social_instagram": "https://instagram.com",
+    "social_tiktok": "https://tiktok.com",
+    "social_facebook": "https://facebook.com",
+    "social_pinterest": "https://pinterest.com",
+    "social_youtube": ""
+  },
+  "presets": {
+    "Aurelle": {
+      "color_background": "#F6F1EA",
+      "color_text": "#2B2622",
+      "color_secondary": "#9CAF95",
+      "color_accent": "#BD6B4C"
+    }
+  }
+}

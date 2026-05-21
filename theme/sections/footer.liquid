@@ -1,0 +1,72 @@
+<footer class="footer">
+  <div class="page-width">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <h3>{{ settings.brand_name | default: shop.name }}</h3>
+        <p>{{ section.settings.tagline }}</p>
+        {% render 'social-icons' %}
+      </div>
+
+      <div>
+        <h4>{{ section.settings.col1_title }}</h4>
+        <div class="footer__links">
+          {%- for link in section.settings.menu_1.links -%}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <div>
+        <h4>{{ section.settings.col2_title }}</h4>
+        <div class="footer__links">
+          {%- for link in section.settings.menu_2.links -%}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <div>
+        <h4>{{ section.settings.newsletter_title }}</h4>
+        <p style="opacity:.75;font-size:.9rem">{{ section.settings.newsletter_text }}</p>
+        {%- form 'customer' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter,footer">
+          {%- if form.posted_successfully? -%}
+            <p style="color:var(--color-secondary)">Thanks for subscribing!</p>
+          {%- endif -%}
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <input type="email" name="contact[email]" placeholder="Email address" required
+                   style="flex:1;min-width:0;padding:12px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:inherit">
+            <button type="submit" class="button button--primary button--sm">Join</button>
+          </div>
+        {%- endform -%}
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <span>© {{ 'now' | date: '%Y' }} {{ settings.brand_name | default: shop.name }}. All rights reserved.</span>
+      <div class="payment-icons" aria-label="Accepted payments">
+        {%- for type in shop.enabled_payment_types -%}
+          {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "text", "id": "tagline", "label": "Tagline", "default": "Clean, effective skincare formulated with proven actives and nothing you don’t need." },
+    { "type": "header", "content": "Column 1" },
+    { "type": "text", "id": "col1_title", "label": "Title", "default": "Shop" },
+    { "type": "link_list", "id": "menu_1", "label": "Menu", "default": "footer" },
+    { "type": "header", "content": "Column 2" },
+    { "type": "text", "id": "col2_title", "label": "Title", "default": "Help" },
+    { "type": "link_list", "id": "menu_2", "label": "Menu" },
+    { "type": "header", "content": "Newsletter" },
+    { "type": "text", "id": "newsletter_title", "label": "Title", "default": "Join the list" },
+    { "type": "text", "id": "newsletter_text", "label": "Text", "default": "10% off your first order + skincare tips." }
+  ]
+}
+{% endschema %}

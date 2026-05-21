@@ -1,0 +1,18 @@
+{%- comment -%} Usage: {% render 'price', product: product %} or pass variant {%- endcomment -%}
+{%- liquid
+  assign target = variant | default: product.selected_or_first_available_variant | default: product
+  assign price = target.price
+  assign compare = target.compare_at_price
+  if product and variant == blank
+    assign price = product.price
+    assign compare = product.compare_at_price
+  endif
+-%}
+<span class="card__price">
+  <span class="money">{{ price | money }}</span>
+  {%- if compare > price -%}
+    <span class="compare">{{ compare | money }}</span>
+    {%- assign pct = compare | minus: price | times: 100 | divided_by: compare -%}
+    <span class="save">Save {{ pct }}%</span>
+  {%- endif -%}
+</span>

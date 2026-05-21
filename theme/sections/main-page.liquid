@@ -1,0 +1,15 @@
+<div class="page-hero">
+  <div class="page-width">
+    <p class="eyebrow">{{ section.settings.eyebrow | default: 'Aurelle' }}</p>
+    <h1>{{ page.title }}</h1>
+  </div>
+</div>
+<section class="section">
+  <div class="page-width">
+    <div class="rte">{{ page.content }}</div>
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Page", "settings": [ { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Aurelle" } ] }
+{% endschema %}

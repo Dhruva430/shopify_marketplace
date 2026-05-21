@@ -1,0 +1,47 @@
+<div class="page-hero">
+  <div class="page-width">
+    <p class="eyebrow">We’re here to help</p>
+    <h1>{{ page.title | default: 'Contact us' }}</h1>
+    <p class="lede" style="margin:8px auto 0">{{ section.settings.intro }}</p>
+  </div>
+</div>
+<section class="section">
+  <div class="page-width">
+    <div class="contact-grid">
+      <div>
+        {%- form 'contact', class: 'contact-form' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="form-success">Thanks for reaching out — we’ll reply within 1 business day.</p>
+          {%- endif -%}
+          {%- if form.errors -%}
+            <p class="form-success" style="background:#f6dede">Please check the highlighted fields and try again.</p>
+          {%- endif -%}
+          <div><label for="cname">Name</label><input id="cname" type="text" name="contact[name]" required></div>
+          <div><label for="cemail">Email</label><input id="cemail" type="email" name="contact[email]" required></div>
+          <div><label for="cphone">Phone (optional)</label><input id="cphone" type="tel" name="contact[phone]"></div>
+          <div><label for="cbody">Message</label><textarea id="cbody" name="contact[body]" required></textarea></div>
+          <button type="submit" class="button button--primary">Send message</button>
+        {%- endform -%}
+      </div>
+      <aside class="info-card">
+        <div class="row">{% render 'icon', name: 'mail' %}<div><strong>Email</strong><br>{{ section.settings.email }}</div></div>
+        <div class="row">{% render 'icon', name: 'phone' %}<div><strong>Phone</strong><br>{{ section.settings.phone }}</div></div>
+        <div class="row">{% render 'icon', name: 'pin' %}<div><strong>Studio</strong><br>{{ section.settings.address }}</div></div>
+        <div class="row">{% render 'icon', name: 'truck' %}<div><strong>Hours</strong><br>{{ section.settings.hours }}</div></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact form",
+  "settings": [
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Questions about a product or your order? Drop us a line." },
+    { "type": "text", "id": "email", "label": "Email", "default": "hello@aurelle.com" },
+    { "type": "text", "id": "phone", "label": "Phone", "default": "+1 (555) 012-3456" },
+    { "type": "text", "id": "address", "label": "Address", "default": "24 Botanic Lane, Portland, OR" },
+    { "type": "text", "id": "hours", "label": "Hours", "default": "Mon–Fri, 9am–5pm PST" }
+  ]
+}
+{% endschema %}

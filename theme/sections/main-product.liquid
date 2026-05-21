@@ -1,0 +1,210 @@
+{%- liquid
+  assign product = product
+  assign current_variant = product.selected_or_first_available_variant
+  assign form_id = 'ProductForm-' | append: section.id
+  assign has_subscriptions = false
+  if product.selling_plan_groups.size > 0
+    assign has_subscriptions = true
+  endif
+-%}
+
+<section class="section" data-product-root>
+  <div class="page-width">
+    <div class="product">
+      {%- comment -%} ---------- Gallery ---------- {%- endcomment -%}
+      <div class="gallery" data-gallery>
+        <div class="gallery__main" data-gallery-main>
+          {% render 'badge', product: product %}
+          {%- if product.featured_media -%}
+            <img src="{{ product.featured_media | image_url: width: 1100 }}" alt="{{ product.featured_media.alt | escape | default: product.title }}" width="1100" height="1375">
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder' }}
+          {%- endif -%}
+        </div>
+        {%- if product.media.size > 1 -%}
+          <div class="gallery__thumbs">
+            {%- for media in product.media -%}
+              <button class="gallery__thumb" type="button" data-gallery-thumb data-full="{{ media | image_url: width: 1100 }}"
+                      aria-current="{% if forloop.first %}true{% else %}false{% endif %}" aria-label="View image {{ forloop.index }}">
+                <img src="{{ media | image_url: width: 160 }}" alt="" width="160" height="200" loading="lazy">
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ---------- Info ---------- {%- endcomment -%}
+      <div class="product__info">
+        {%- if product.vendor != blank and section.settings.show_vendor -%}<div class="product__vendor">{{ product.vendor }}</div>{%- endif -%}
+        <h1 class="product__title">{{ product.title }}</h1>
+        <div class="product__rating">{% render 'rating-stars', product: product, show_count: true %} <a href="#reviews" style="font-size:.82rem;color:var(--color-muted);text-decoration:underline">Read reviews</a></div>
+
+        <div class="product__price">
+          <span data-price>{{ current_variant.price | money }}</span>
+          {%- if current_variant.compare_at_price > current_variant.price -%}
+            <span class="compare" data-compare>{{ current_variant.compare_at_price | money }}</span>
+          {%- else -%}
+            <span class="compare" data-compare style="display:none"></span>
+          {%- endif -%}
+        </div>
+
+        {%- if product.description != blank -%}
+          <p class="product__desc">{{ product.description | strip_html | truncatewords: 38 }}</p>
+        {%- endif -%}
+
+        <script type="application/json" data-variants-json>
+          [{%- for v in product.variants -%}{"id":{{ v.id }},"options":{{ v.options | json }},"price":{{ v.price }},"compare_at_price":{{ v.compare_at_price | default: 0 }},"available":{{ v.available }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]
+        </script>
+
+        {%- form 'product', product, id: form_id, data-product-form: '', class: 'product__form' -%}
+          {%- unless product.has_only_default_variant -%}
+            {%- for option in product.options_with_values -%}
+              <div class="option" data-option-selector>
+                <span class="option__label">{{ option.name }}</span>
+                <div class="swatches">
+                  {%- for value in option.values -%}
+                    {%- assign is_selected = false -%}
+                    {%- if option.selected_value == value -%}{%- assign is_selected = true -%}{%- endif -%}
+                    <label class="swatch{% if is_selected %} is-active{% endif %}">
+                      <input type="radio" name="option-{{ option.position }}" value="{{ value | escape }}" {% if is_selected %}checked{% endif %}>
+                      {{ value }}
+                    </label>
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endunless -%}
+
+          {%- comment -%} Subscriptions (Shopify Subscriptions selling plans) {%- endcomment -%}
+          {%- if has_subscriptions -%}
+            <div class="option">
+              <span class="option__label">Purchase options</span>
+              <div class="selling-plans">
+                <div class="plan is-active" data-plan="">
+                  <div><strong>One-time purchase</strong><small>{{ current_variant.price | money }}</small></div>
+                </div>
+                {%- for group in product.selling_plan_groups -%}
+                  {%- for plan in group.selling_plans -%}
+                    <div class="plan" data-plan="{{ plan.id }}">
+                      <div><strong>Subscribe &amp; save</strong><small>{{ plan.name }}</small></div>
+                      <span class="pill">Save</span>
+                    </div>
+                  {%- endfor -%}
+                {%- endfor -%}
+              </div>
+            </div>
+            <input type="hidden" name="selling_plan" value="" data-selling-plan-input>
+          {%- endif -%}
+
+          <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id>
+
+          <div class="product__buy" data-atc-anchor>
+            <div class="qty" data-qty-widget>
+              <button type="button" data-step="down" aria-label="Decrease">−</button>
+              <input type="number" name="quantity" value="1" min="1" inputmode="numeric" aria-label="Quantity">
+              <button type="button" data-step="up" aria-label="Increase">+</button>
+            </div>
+            <button type="submit" class="button button--primary button--lg" {% unless product.available %}disabled{% endunless %}>
+              <span data-btn-label>{% if product.available %}Add to cart{% else %}Sold out{% endif %}</span>
+            </button>
+          </div>
+        {%- endform -%}
+
+        <div class="trust-row">
+          <span class="ti">{% render 'icon', name: 'truck' %} Free shipping over $50</span>
+          <span class="ti">{% render 'icon', name: 'return' %} 30-day returns</span>
+          <span class="ti">{% render 'icon', name: 'rabbit' %} Cruelty-free</span>
+        </div>
+
+        <div class="accordion" style="margin-top:8px">
+          <details open>
+            <summary>Description</summary>
+            <div class="accordion__body rte">{{ product.description }}</div>
+          </details>
+          {%- if product.metafields.custom.ingredients != blank -%}
+            <details>
+              <summary>Key ingredients</summary>
+              <div class="accordion__body rte">{{ product.metafields.custom.ingredients }}</div>
+            </details>
+          {%- endif -%}
+          {%- if product.metafields.custom.how_to_use != blank -%}
+            <details>
+              <summary>How to use</summary>
+              <div class="accordion__body rte">{{ product.metafields.custom.how_to_use }}</div>
+            </details>
+          {%- endif -%}
+          <details>
+            <summary>Shipping &amp; returns</summary>
+            <div class="accordion__body rte"><p>Free standard shipping on orders over $50. Most orders ship within 1–2 business days. Not in love? Return within 30 days for a full refund.</p></div>
+          </details>
+        </div>
+
+        {%- comment -%} App block area: Judge.me, Subscriptions widget, etc. install here {%- endcomment -%}
+        {%- if section.blocks.size > 0 -%}
+          <div class="product-app-blocks" style="margin-top:8px">
+            {%- for block in section.blocks -%}
+              {%- case block.type -%}
+                {%- when '@app' -%}{% render block %}
+              {%- endcase -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} ---------- Reviews app target (Judge.me embeds here) ---------- {%- endcomment -%}
+<section class="section section--cream" id="reviews">
+  <div class="page-width">
+    <div class="section-head"><p class="eyebrow">Reviews</p><h2>What customers say</h2></div>
+    <div id="judgeme_product_reviews" class="jdgm-widget jdgm-review-widget" data-id="{{ product.id }}">
+      <p class="text-center" style="color:var(--color-muted)">⭐ Connect Judge.me Reviews in the theme editor to display verified reviews here.</p>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} ---------- Complete the routine (Search & Discovery recommendations) ---------- {%- endcomment -%}
+{%- assign rel = product.collections.first -%}
+{%- if rel.products.size > 1 -%}
+  <section class="section">
+    <div class="page-width">
+      <div class="section-head"><p class="eyebrow">Complete the routine</p><h2>Pairs well with</h2></div>
+      <div class="product-grid">
+        {%- assign shown = 0 -%}
+        {%- for p in rel.products -%}
+          {%- if p.id != product.id and shown < 4 -%}
+            {% render 'product-card', product: p %}
+            {%- assign shown = shown | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{%- comment -%} ---------- Sticky add to cart ---------- {%- endcomment -%}
+{%- if settings.show_sticky_atc -%}
+  <div class="sticky-atc" data-sticky-atc>
+    <div class="sticky-atc__inner">
+      <div class="sticky-atc__info">
+        {%- if product.featured_media -%}<img src="{{ product.featured_media | image_url: width: 88 }}" width="44" height="44" alt="">{%- endif -%}
+        <div>
+          <strong>{{ product.title }}</strong>
+          <span style="color:var(--color-muted);font-size:.85rem">{{ current_variant.price | money }}</span>
+        </div>
+      </div>
+      <button type="submit" form="{{ form_id }}" class="button button--primary">Add to cart</button>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": [
+    { "type": "checkbox", "id": "show_vendor", "label": "Show vendor", "default": true }
+  ],
+  "blocks": [{ "type": "@app" }]
+}
+{% endschema %}

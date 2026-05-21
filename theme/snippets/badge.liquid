@@ -1,0 +1,28 @@
+{%- comment -%}
+  Labeler-style product badges. Driven by product tags using the "badge:" prefix,
+  e.g. tags: badge:Bestseller, badge:Vegan, badge:New.
+  Auto-adds Sale / Sold out. Usage: {% render 'badge', product: product %}
+{%- endcomment -%}
+{%- if product -%}
+  <div class="badges">
+    {%- unless product.available -%}
+      <span class="badge badge--ink">Sold out</span>
+    {%- endunless -%}
+    {%- if product.available and product.compare_at_price > product.price -%}
+      <span class="badge">Sale</span>
+    {%- endif -%}
+    {%- for tag in product.tags -%}
+      {%- if tag contains 'badge:' -%}
+        {%- assign label = tag | remove: 'badge:' | strip -%}
+        {%- assign lower = label | downcase -%}
+        {%- if lower contains 'vegan' or lower contains 'natural' or lower contains 'best' -%}
+          <span class="badge badge--sage">{{ label }}</span>
+        {%- elsif lower contains 'new' -%}
+          <span class="badge badge--cream">{{ label }}</span>
+        {%- else -%}
+          <span class="badge badge--sage">{{ label }}</span>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}

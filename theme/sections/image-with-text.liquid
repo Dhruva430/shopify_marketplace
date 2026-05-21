@@ -1,0 +1,76 @@
+{%- liquid
+  assign s = section.settings
+  assign reverse = ''
+  if s.media_position == 'right'
+    assign reverse = 'split--reverse'
+  endif
+  assign img_src = ''
+  if s.image != blank
+    assign img_src = s.image | image_url: width: 1200
+  elsif s.image_asset != blank
+    assign img_src = s.image_asset | asset_url
+  endif
+-%}
+<section class="section {% if s.background == 'cream' %}section--cream{% elsif s.background == 'sage' %}section--sage{% endif %}">
+  <div class="page-width">
+    <div class="split {{ reverse }}">
+      <div class="split__media">
+        {%- if img_src != blank -%}
+          <img src="{{ img_src }}" alt="{{ s.image.alt | escape | default: s.heading }}" width="1200" height="1200" loading="lazy">
+        {%- else -%}
+          {{ 'product-2' | placeholder_svg_tag: 'placeholder' }}
+        {%- endif -%}
+      </div>
+      <div class="split__content">
+        {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+        <h2>{{ s.heading }}</h2>
+        {%- if s.text != blank -%}<div class="rte" style="margin:0">{{ s.text }}</div>{%- endif -%}
+        {%- if section.blocks.size > 0 -%}
+          <ul class="feature-list">
+            {%- for block in section.blocks -%}
+              <li {{ block.shopify_attributes }}><span class="tick">{% render 'icon', name: 'check' %}</span><span>{{ block.settings.text }}</span></li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        {%- if s.button_text != blank -%}
+          <a href="{{ s.button_link }}" class="button button--primary">{{ s.button_text }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image with text",
+  "max_blocks": 5,
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "image_asset", "label": "Image asset fallback", "info": "Filename in /assets, e.g. story.jpg (used if no image picked)" },
+    { "type": "select", "id": "media_position", "label": "Image position", "options": [
+      { "value": "left", "label": "Left" }, { "value": "right", "label": "Right" }
+    ], "default": "left" },
+    { "type": "select", "id": "background", "label": "Background", "options": [
+      { "value": "default", "label": "Ivory" }, { "value": "cream", "label": "Cream" }, { "value": "sage", "label": "Sage" }
+    ], "default": "default" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The hero product" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Meet the serum doing the heavy lifting" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>A weightless blend of hyaluronic acid and niacinamide that floods skin with moisture and visibly smooths in two weeks.</p>" },
+    { "type": "text", "id": "button_text", "label": "Button label", "default": "Shop the serum" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "blocks": [
+    { "type": "feature", "name": "Feature line", "settings": [
+      { "type": "text", "id": "text", "label": "Text", "default": "Visibly plumper skin in 14 days" }
+    ]}
+  ],
+  "presets": [{
+    "name": "Image with text",
+    "blocks": [
+      { "type": "feature", "settings": { "text": "Hydrates for up to 72 hours" } },
+      { "type": "feature", "settings": { "text": "Fragrance-free, suitable for sensitive skin" } },
+      { "type": "feature", "settings": { "text": "Vegan & cruelty-free" } }
+    ]
+  }]
+}
+{% endschema %}

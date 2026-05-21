@@ -1,0 +1,51 @@
+<section class="section section--cream">
+  <div class="page-width">
+    <div class="section-head">
+      {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2>{{ section.settings.heading }}</h2>
+    </div>
+    <div class="testi-grid">
+      {%- for block in section.blocks -%}
+        <figure class="testi" {{ block.shopify_attributes }}>
+          <span class="stars" aria-hidden="true">
+            {%- for i in (1..5) -%}{% render 'icon', name: 'star' %}{%- endfor -%}
+          </span>
+          <blockquote>“{{ block.settings.quote }}”</blockquote>
+          <figcaption class="testi__by">
+            <span class="testi__avatar">{{ block.settings.name | slice: 0 }}</span>
+            <span>
+              <span class="testi__name">{{ block.settings.name }}</span>
+              <span class="testi__role">{{ block.settings.role }}</span>
+            </span>
+          </figcaption>
+        </figure>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Real reviews" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Skin stories from our community" }
+  ],
+  "blocks": [
+    { "type": "review", "name": "Review", "settings": [
+      { "type": "textarea", "id": "quote", "label": "Quote", "default": "My skin has never looked this calm. The serum is now non-negotiable in my routine." },
+      { "type": "text", "id": "name", "label": "Name", "default": "Priya S." },
+      { "type": "text", "id": "role", "label": "Role / detail", "default": "Verified buyer · Combination skin" }
+    ]}
+  ],
+  "presets": [{
+    "name": "Testimonials",
+    "blocks": [
+      { "type": "review", "settings": { "quote": "Two weeks in and my texture is visibly smoother. Worth every penny.", "name": "Priya S.", "role": "Verified buyer · Combination skin" } },
+      { "type": "review", "settings": { "quote": "Finally a clean brand that actually works. The glow is real.", "name": "Daniel M.", "role": "Verified buyer · Dry skin" } },
+      { "type": "review", "settings": { "quote": "Gentle enough for my sensitive skin and zero irritation. Obsessed.", "name": "Aisha R.", "role": "Verified buyer · Sensitive skin" } }
+    ]
+  }]
+}
+{% endschema %}

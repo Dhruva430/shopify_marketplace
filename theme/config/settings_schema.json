@@ -1,0 +1,227 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Aurelle",
+    "theme_version": "1.0.0",
+    "theme_author": "Digital Heroes Challenge",
+    "theme_documentation_url": "https://shopify.dev/themes",
+    "theme_support_url": "https://shopify.dev/themes"
+  },
+  {
+    "name": "Brand colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "60% — Primary"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Primary background (ivory)",
+        "default": "#F6F1EA"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Body text (espresso)",
+        "default": "#2B2622"
+      },
+      {
+        "type": "color",
+        "id": "color_muted",
+        "label": "Muted text (stone)",
+        "default": "#8C857C"
+      },
+      {
+        "type": "header",
+        "content": "30% — Secondary"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary_bg",
+        "label": "Secondary background (cream)",
+        "default": "#EFE7DB"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "label": "Secondary brand (sage)",
+        "default": "#9CAF95"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary_soft",
+        "label": "Secondary soft (sage tint)",
+        "default": "#DCE3D6"
+      },
+      {
+        "type": "header",
+        "content": "10% — Accent (CTAs)"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent (terracotta)",
+        "default": "#BD6B4C"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_dark",
+        "label": "Accent hover",
+        "default": "#A1573B"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_text",
+        "label": "Text on accent",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "header",
+        "content": "Footer"
+      },
+      {
+        "type": "color",
+        "id": "color_footer_bg",
+        "label": "Footer background",
+        "default": "#2B2622"
+      },
+      {
+        "type": "color",
+        "id": "color_footer_text",
+        "label": "Footer text",
+        "default": "#EFE7DB"
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "min": 1100,
+        "max": 1600,
+        "step": 20,
+        "unit": "px",
+        "label": "Maximum page width",
+        "default": 1300
+      },
+      {
+        "type": "range",
+        "id": "section_spacing",
+        "min": 40,
+        "max": 140,
+        "step": 4,
+        "unit": "px",
+        "label": "Spacing between sections",
+        "default": 88
+      },
+      {
+        "type": "range",
+        "id": "card_radius",
+        "min": 0,
+        "max": 28,
+        "step": 2,
+        "unit": "px",
+        "label": "Corner radius",
+        "default": 14
+      }
+    ]
+  },
+  {
+    "name": "Logo & favicon",
+    "settings": [
+      {
+        "type": "text",
+        "id": "brand_name",
+        "label": "Brand name (wordmark)",
+        "default": "Aurelle"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo image (optional, overrides wordmark)"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "min": 80,
+        "max": 240,
+        "step": 10,
+        "unit": "px",
+        "label": "Logo width",
+        "default": 140
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      }
+    ]
+  },
+  {
+    "name": "Product cards",
+    "settings": [
+      {
+        "type": "select",
+        "id": "card_image_ratio",
+        "label": "Image ratio",
+        "options": [
+          { "value": "portrait", "label": "Portrait (4:5)" },
+          { "value": "square", "label": "Square (1:1)" }
+        ],
+        "default": "portrait"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "Show vendor",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_rating",
+        "label": "Show star rating",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart type",
+        "options": [
+          { "value": "drawer", "label": "Drawer" },
+          { "value": "page", "label": "Page" }
+        ],
+        "default": "drawer"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_sticky_atc",
+        "label": "Sticky add-to-cart on product pages",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_cart_note",
+        "label": "Enable order notes",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      { "type": "text", "id": "social_instagram", "label": "Instagram URL" },
+      { "type": "text", "id": "social_tiktok", "label": "TikTok URL" },
+      { "type": "text", "id": "social_facebook", "label": "Facebook URL" },
+      { "type": "text", "id": "social_pinterest", "label": "Pinterest URL" },
+      { "type": "text", "id": "social_youtube", "label": "YouTube URL" }
+    ]
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main": {
+      "type": "faq",
+      "settings": { "eyebrow": "Help center", "heading": "Frequently asked questions" },
+      "blocks": {
+        "q1": { "type": "qa", "settings": { "question": "How long until I see results?", "answer": "<p>Most customers see visible results within 2–4 weeks of consistent use, morning and night.</p>" } },
+        "q2": { "type": "qa", "settings": { "question": "Are your products suitable for sensitive skin?", "answer": "<p>Yes — our formulas are fragrance-free and dermatologist tested. We always recommend a patch test first.</p>" } },
+        "q3": { "type": "qa", "settings": { "question": "How does Subscribe & Save work?", "answer": "<p>Choose “Subscribe & save” on any eligible product to get a discount and free shipping on every refill. Skip, pause, or cancel anytime.</p>" } },
+        "q4": { "type": "qa", "settings": { "question": "What is your shipping policy?", "answer": "<p>Free standard shipping on orders over $50. Orders ship within 1–2 business days.</p>" } },
+        "q5": { "type": "qa", "settings": { "question": "What is your return policy?", "answer": "<p>If you’re not happy, return within 30 days for a full refund — even if the bottle is open.</p>" } }
+      },
+      "block_order": ["q1", "q2", "q3", "q4", "q5"]
+    }
+  },
+  "order": ["main"]
+}
