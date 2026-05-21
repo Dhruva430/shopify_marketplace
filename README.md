@@ -6,7 +6,7 @@ A premium, ready-to-sell **skincare** Shopify store built as a custom **Liquid t
 - **Brand:** Aurelle — clean, effective skincare
 - **Theme:** custom Liquid theme in [`theme/`](theme/) (Dawn-style OS 2.0 structure)
 - **Design system:** 60/30/10 palette (ivory · sage/cream · terracotta), Fraunces + Jost
-- **Apps integrated:** Judge.me · Shopify Bundles · Subscriptions · Search & Discovery · Marketplace Connect · Labeler
+- **Required apps (theme-ready; install & integrate via admin):** Judge.me · Shopify Bundles · Subscriptions · Search & Discovery · Marketplace Connect · Labeler — see [`APPS.md`](APPS.md) for the per-app study + integration guide
 
 ## Repo layout
 
@@ -29,6 +29,7 @@ scripts/seed-store.ts  # creates products+images, collections, pages, menus via 
 scripts/gen-images.ts  # regenerates brand imagery (sharp)
 tsconfig.json          # strict TS config (Node scripts + theme/src)
 SETUP.md               # ← what to configure inside Shopify (read this)
+APPS.md                # ← study + integration guide for the 6 required apps
 agent.md               # architecture & conventions
 ```
 

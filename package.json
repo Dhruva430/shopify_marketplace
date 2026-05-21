@@ -8,6 +8,7 @@
     "dev": "pnpm build:js && shopify theme dev --path theme --store fetchwell-edyplil9.myshopify.com",
     "push": "pnpm build:js && shopify theme push --path theme --store fetchwell-edyplil9.myshopify.com",
     "pull": "shopify theme pull --path theme --store fetchwell-edyplil9.myshopify.com",
+    "share": "pnpm build:js && shopify theme share --path theme --store fetchwell-edyplil9.myshopify.com",
     "login": "shopify login --store fetchwell-edyplil9.myshopify.com",
     "check": "shopify theme check --path theme",
     "package": "pnpm build:js && shopify theme package --path theme",
