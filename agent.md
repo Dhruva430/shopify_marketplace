@@ -70,14 +70,22 @@ Set these in **Theme Settings → Colors** as a color scheme; apply schemes per-
 - **Platform:** Shopify Partners account → Development Store (no payments / test mode).
 - **Theme:** custom Liquid theme in `theme/`. Edit Liquid/CSS/JS directly; further tweaks (content,
   app blocks) happen in the **Theme Editor** after upload.
+- **Language: TypeScript** (strict). Node automation in `scripts/*.ts` runs via `tsx`; the
+  storefront's browser code is `theme/src/global.ts`, bundled by **esbuild** into
+  `theme/assets/global.js` (the file Shopify serves — treat it as a build artifact, never hand-edit).
+  `tsconfig.json` is strict and covers both. `pnpm typecheck` = `tsc --noEmit`.
 - **Package manager: pnpm** (team preference). Setup is `pnpm install`. Scripts (`package.json`):
-  - `pnpm dev` → `shopify theme dev --path theme` (live preview)
-  - `pnpm push` / `pnpm pull` → upload / download theme
+  - `pnpm build:js` → compile `theme/src/global.ts` → `theme/assets/global.js` (esbuild, IIFE)
+  - `pnpm watch:js` → same, rebuilding on save (run beside `pnpm dev`)
+  - `pnpm dev` → `build:js` then `shopify theme dev --path theme` (live preview)
+  - `pnpm push` / `pnpm pull` → `build:js` then upload / download theme
   - `pnpm check` → `shopify theme check --path theme` (lint; keep at 0 errors)
-  - `pnpm package` → zip theme for manual upload
-  - `pnpm gen:images` → regenerate brand imagery (`scripts/gen-images.mjs`, uses `sharp`)
-  - Shopify CLI is a devDependency; native build scripts (sharp, esbuild) are approved in
-    `pnpm-workspace.yaml` (`allowBuilds`), and `verifyDepsBeforeRun: false` keeps `pnpm run` quiet.
+  - `pnpm typecheck` → `tsc --noEmit` (strict, across scripts + theme/src)
+  - `pnpm package` → `build:js` then zip theme for manual upload
+  - `pnpm gen:images` → regenerate brand imagery (`scripts/gen-images.ts`, uses `sharp`)
+  - Shopify CLI / typescript / tsx / esbuild are devDependencies; native build scripts
+    (sharp, esbuild) are approved in `pnpm-workspace.yaml` (`allowBuilds`), and
+    `verifyDepsBeforeRun: false` keeps `pnpm run` quiet.
 - **Auth:** `pnpm exec shopify login --store <your-dev-store>.myshopify.com`.
 - **Version control:** git repo initialized; remote `origin` → `github.com:Dhruva430/shopify_marketplace`.
 - **AI assist:** use **Shopify Sidekick / Shopify Magic** for extra section ideas, copy, and SEO — see §9.
@@ -92,8 +100,10 @@ A hand-built OS 2.0 theme. Actual layout:
 theme/
   assets/
     base.css        → entire design system (tokens, components, responsive)
-    global.js       → cart drawer + AJAX add, product gallery, variant logic,
-                      sticky ATC, mobile nav, quantity steppers (vanilla, no deps)
+    global.js       → BUILD ARTIFACT from src/global.ts (do not edit by hand)
+  src/
+    global.ts       → cart drawer + AJAX add, product gallery, variant logic, sticky ATC,
+                      mobile nav, quantity steppers (typed, dependency-free; esbuild → global.js)
   config/
     settings_schema.json  → brand colors (60/30/10), layout, cards, cart, social
     settings_data.json    → brand defaults pre-filled (ivory/sage/terracotta)
@@ -251,15 +261,29 @@ Record custom sections, app config decisions, and per-app study notes here as th
   drawer with free-shipping bar, search, 404, About/Contact/FAQ, customer account templates.
 - **Design system:** `assets/base.css` holds all styling; brand tokens come from theme settings via
   CSS vars in `theme.liquid`. 60/30/10 palette + Fraunces/Jost (Google Fonts).
-- **Imagery:** `scripts/gen-images.mjs` (sharp) generates product (3× each), collection, hero,
+- **Imagery:** `scripts/gen-images.ts` (sharp) generates product (3× each), collection, hero,
   story, logo, favicon PNGs into `brand/images/`. Vector mockups — swap for real photos later.
 - **App hooks in theme:** product page exposes an `@app` block slot + `#reviews` (Judge.me);
   subscription selector renders from `product.selling_plan_groups`; collection filters read
   `collection.filters` (Search & Discovery); badges read `badge:*` tags (Labeler-style).
-- **Tooling:** pnpm + Shopify CLI; `pnpm check` passes with 0 errors (6 warnings = Google Fonts).
+- **TypeScript migration (v1.1):** all JS replaced with strict TypeScript. Node scripts
+  (`scripts/*.ts`) run via `tsx`; shared typed Admin API client in `scripts/shopify.ts`
+  (typed `rest`/`gql` + REST/GraphQL response types); credentials typed via zod `z.infer`
+  in `scripts/config.ts`. Browser code moved to `theme/src/global.ts` (typed cart/variant/DOM
+  shapes) and bundled by esbuild → `theme/assets/global.js`. `pnpm typecheck` is clean.
+- **Catalogue expansion (v1.2):** seed now creates **26 products** (6 original + 20 new:
+  serums, face oils, cleansers, toners/mists, masks, eye care, lip & body care) across
+  **14 smart collections** (added serums, cleansers, face-oils, toners-mists, masks, eye-care,
+  anti-aging, acne-blemish, body-care, new-arrivals). New products use real Pexels photos
+  attached by URL (`imageUrls` on `ProductSeed` / `imgUrl` on `CollectionSeed`); images are
+  attached one-by-one via `attachImages()` so a bad source can't abort the seed.
+- **Gift card:** added standalone branded `templates/gift_card.liquid` (`{% layout none %}`),
+  which also silences the `shopify theme dev` "could not delete gift_card" sync warning.
+- **Tooling:** pnpm + Shopify CLI + tsx + esbuild + typescript; `pnpm check` passes with 0 errors
+  (Google Fonts `RemoteAsset` warnings only); `pnpm typecheck` passes with 0 errors.
 - **TODO on platform:** see `SETUP.md` — create store, upload, import CSV + images, build
   nav/collections/pages, install & configure the 6 apps, shipping + discounts, QA.
 
 ---
 
-_Last updated: 2026-05-21_
+_Last updated: 2026-05-21 (v1.1 — TypeScript migration)_

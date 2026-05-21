@@ -1,0 +1,154 @@
+{% layout none %}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+    <title>{{ shop.name | default: 'Aurelle' }} gift card — {{ gift_card.balance | money }}</title>
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    {%- style -%}
+      :root{
+        --bg:{{ settings.color_background | default: '#F6F1EA' }};
+        --ink:{{ settings.color_text | default: '#2B2622' }};
+        --cream:{{ settings.color_secondary_bg | default: '#EFE7DB' }};
+        --sage:{{ settings.color_secondary | default: '#9CAF95' }};
+        --sage-soft:{{ settings.color_secondary_soft | default: '#DCE3D6' }};
+        --accent:{{ settings.color_accent | default: '#BD6B4C' }};
+        --accent-dark:{{ settings.color_accent_dark | default: '#A1573B' }};
+        --on-accent:{{ settings.color_accent_text | default: '#FFFFFF' }};
+        --stone:#8C857C;
+        --serif:"Fraunces",Georgia,"Times New Roman",serif;
+        --sans:"Jost","Helvetica Neue",Arial,sans-serif;
+      }
+      *{box-sizing:border-box}
+      body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+        -webkit-font-smoothing:antialiased;line-height:1.5;
+        display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:40px 20px}
+      a{color:inherit}
+      .wrap{width:100%;max-width:460px}
+      .brand{text-align:center;margin-bottom:28px}
+      .brand__name{font-family:var(--serif);font-weight:600;font-size:30px;letter-spacing:4px;margin:0}
+      .brand__tag{font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--stone);margin:6px 0 0}
+      .card{position:relative;overflow:hidden;border-radius:20px;padding:38px 32px 34px;
+        background:linear-gradient(135deg,var(--cream) 0%,var(--sage-soft) 100%);
+        box-shadow:0 18px 50px rgba(43,38,34,.16);text-align:center}
+      .card__blob{position:absolute;width:260px;height:260px;border-radius:50%;
+        background:rgba(255,255,255,.4);top:-90px;right:-90px}
+      .card__eyebrow{position:relative;font-size:12px;letter-spacing:3px;text-transform:uppercase;
+        color:var(--accent-dark);margin:0 0 10px}
+      .card__amount{position:relative;font-family:var(--serif);font-weight:600;
+        font-size:64px;line-height:1;margin:0}
+      .card__sub{position:relative;color:var(--stone);font-size:14px;margin:14px 0 0}
+      .card__sub s{opacity:.7;margin-right:6px}
+      .expired,.disabled{position:relative;display:inline-block;margin-top:16px;padding:6px 14px;
+        border-radius:999px;background:var(--accent);color:var(--on-accent);font-size:13px;font-weight:500}
+      .code{margin:26px 0 8px}
+      .code__label{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--stone);margin:0 0 10px}
+      .code__value{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:22px;font-weight:600;
+        letter-spacing:3px;background:#fff;border:1px solid var(--sage-soft);border-radius:12px;
+        padding:16px 18px;word-break:break-all}
+      .btn{display:inline-block;width:100%;border:0;cursor:pointer;text-align:center;
+        font-family:var(--sans);font-weight:500;font-size:15px;border-radius:999px;
+        padding:15px 22px;text-decoration:none;transition:background .15s ease,transform .15s ease}
+      .btn--primary{background:var(--accent);color:var(--on-accent);margin-top:14px}
+      .btn--primary:hover{background:var(--accent-dark)}
+      .btn--ghost{background:transparent;color:var(--ink);border:1px solid var(--ink);margin-top:10px}
+      .btn:active{transform:translateY(1px)}
+      .wallet{display:flex;justify-content:center;margin-top:16px}
+      .meta{text-align:center;color:var(--stone);font-size:13px;margin-top:22px}
+      .meta a{color:var(--accent-dark)}
+      .copied{visibility:hidden;color:var(--sage);font-size:13px;margin-top:8px;font-weight:500}
+      .copied.show{visibility:visible}
+      @media print{
+        body{padding:0}
+        .actions,.brand__tag{display:none}
+        .card{box-shadow:none;border:1px solid var(--sage-soft)}
+      }
+    {%- endstyle -%}
+  </head>
+
+  <body>
+    <main class="wrap">
+      <div class="brand">
+        {%- if settings.logo != blank -%}
+          <img src="{{ settings.logo | image_url: width: 360 }}" alt="{{ shop.name }}" width="180" height="55" style="height:auto">
+        {%- else -%}
+          <p class="brand__name">{{ shop.name | default: 'Aurelle' }}</p>
+          <p class="brand__tag">Clean Skincare</p>
+        {%- endif -%}
+      </div>
+
+      <div class="card">
+        <span class="card__blob" aria-hidden="true"></span>
+        <p class="card__eyebrow">Gift card</p>
+        <p class="card__amount">{{ gift_card.balance | money_without_trailing_zeros }}</p>
+
+        {%- assign initial = gift_card.initial_value | money -%}
+        {%- assign current = gift_card.balance | money -%}
+        {%- if gift_card.balance != gift_card.initial_value -%}
+          <p class="card__sub"><s>{{ initial }}</s> {{ current }} remaining</p>
+        {%- else -%}
+          <p class="card__sub">Treat your skin, on us.</p>
+        {%- endif -%}
+
+        {%- unless gift_card.enabled -%}
+          <span class="disabled">This gift card is disabled</span>
+        {%- endunless -%}
+        {%- if gift_card.expired and gift_card.enabled -%}
+          <span class="expired">Expired{% if gift_card.expires_on %} on {{ gift_card.expires_on | date: '%d %b %Y' }}{% endif %}</span>
+        {%- elsif gift_card.expires_on and gift_card.enabled -%}
+          <p class="card__sub">Valid until {{ gift_card.expires_on | date: '%d %b %Y' }}</p>
+        {%- endif -%}
+
+        <div class="code">
+          <p class="code__label">Your code</p>
+          <div class="code__value" id="GiftCardCode">{{ gift_card.code }}</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn--ghost" data-copy="{{ gift_card.code }}">Copy code</button>
+        <p class="copied" id="Copied" role="status" aria-live="polite">Copied to clipboard ✓</p>
+        <a class="btn btn--primary" href="{{ shop.url }}">Shop {{ shop.name | default: 'Aurelle' }}</a>
+        {%- if gift_card.pass_url -%}
+          <a class="btn btn--ghost" href="{{ gift_card.pass_url }}">Add to Apple Wallet</a>
+        {%- endif -%}
+      </div>
+
+      <p class="meta">
+        Use this code at checkout, or apply it instantly with the button above.<br>
+        Questions? Email <a href="mailto:{{ shop.email }}">{{ shop.email }}</a>.
+      </p>
+    </main>
+
+    <script>
+      (function () {
+        var btn = document.querySelector('[data-copy]');
+        var note = document.getElementById('Copied');
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+          var code = btn.getAttribute('data-copy') || '';
+          var done = function () {
+            if (!note) return;
+            note.classList.add('show');
+            setTimeout(function () { note.classList.remove('show'); }, 2000);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(code).then(done).catch(done);
+          } else {
+            var t = document.createElement('textarea');
+            t.value = code; document.body.appendChild(t); t.select();
+            try { document.execCommand('copy'); } catch (e) {}
+            document.body.removeChild(t); done();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

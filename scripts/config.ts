@@ -28,8 +28,10 @@ const ConfigSchema = z.object({
   SHOPIFY_API_VERSION: z
     .string()
     .regex(/^\d{4}-\d{2}$/, 'SHOPIFY_API_VERSION must look like 2024-10')
-    .default('2024-10')
+    .default('2024-10'),
 });
+
+export type Config = z.infer<typeof ConfigSchema>;
 
 const result = ConfigSchema.safeParse(process.env);
 if (!result.success) {
@@ -41,15 +43,15 @@ if (!result.success) {
 
 const env = result.data;
 
-export const STORE = env.SHOPIFY_STORE;
-export const TOKEN = env.SHOPIFY_ADMIN_TOKEN;
-export const API_VERSION = env.SHOPIFY_API_VERSION;
+export const STORE: string = env.SHOPIFY_STORE;
+export const TOKEN: string = env.SHOPIFY_ADMIN_TOKEN;
+export const API_VERSION: string = env.SHOPIFY_API_VERSION;
 export const BASE = `https://${STORE}/admin/api/${API_VERSION}`;
-export const HEADERS = {
+export const HEADERS: Record<string, string> = {
   'X-Shopify-Access-Token': TOKEN,
   'Content-Type': 'application/json',
-  'Accept': 'application/json'
+  Accept: 'application/json',
 };
 
-export const config = { store: STORE, token: TOKEN, apiVersion: API_VERSION, base: BASE, headers: HEADERS };
+export const config = { store: STORE, token: TOKEN, apiVersion: API_VERSION, base: BASE, headers: HEADERS } as const;
 export default config;

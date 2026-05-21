@@ -5,19 +5,27 @@
   "description": "Aurelle — premium skincare Shopify theme (Liquid) for the Digital Heroes challenge",
   "type": "module",
   "scripts": {
-    "dev": "shopify theme dev --path theme --store fetchwell-edyplil9.myshopify.com",
-    "push": "shopify theme push --path theme --store fetchwell-edyplil9.myshopify.com",
+    "dev": "pnpm build:js && shopify theme dev --path theme --store fetchwell-edyplil9.myshopify.com",
+    "push": "pnpm build:js && shopify theme push --path theme --store fetchwell-edyplil9.myshopify.com",
     "pull": "shopify theme pull --path theme --store fetchwell-edyplil9.myshopify.com",
     "login": "shopify login --store fetchwell-edyplil9.myshopify.com",
     "check": "shopify theme check --path theme",
-    "package": "shopify theme package --path theme",
-    "gen:images": "node scripts/gen-images.mjs",
-    "seed": "node scripts/seed-store.mjs",
-    "images:real": "node scripts/set-real-images.mjs"
+    "package": "pnpm build:js && shopify theme package --path theme",
+    "build:js": "esbuild theme/src/global.ts --bundle --format=iife --target=es2018 --outfile=theme/assets/global.js",
+    "watch:js": "esbuild theme/src/global.ts --bundle --format=iife --target=es2018 --outfile=theme/assets/global.js --watch",
+    "typecheck": "tsc --noEmit",
+    "gen:images": "tsx scripts/gen-images.ts",
+    "seed": "tsx scripts/seed-store.ts",
+    "images:real": "tsx scripts/set-real-images.ts",
+    "check:csv": "tsx scripts/check-csv.ts"
   },
   "devDependencies": {
     "@shopify/cli": "^3.66.0",
-    "sharp": "^0.33.5"
+    "@types/node": "^22.10.0",
+    "esbuild": "^0.24.0",
+    "sharp": "^0.33.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
   },
   "engines": {
     "node": ">=18"

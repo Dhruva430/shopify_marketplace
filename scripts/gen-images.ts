@@ -12,14 +12,23 @@ import { mkdir } from 'node:fs/promises';
 import { dirname } from 'node:path';
 
 const C = {
-  ivory: '#F6F1EA', cream: '#EFE7DB', sage: '#9CAF95', sageSoft: '#DCE3D6',
-  terracotta: '#BD6B4C', ink: '#2B2622', stone: '#8C857C', white: '#FFFDF9'
-};
+  ivory: '#F6F1EA',
+  cream: '#EFE7DB',
+  sage: '#9CAF95',
+  sageSoft: '#DCE3D6',
+  terracotta: '#BD6B4C',
+  ink: '#2B2622',
+  stone: '#8C857C',
+  white: '#FFFDF9',
+} as const;
 
-const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+type PackagingKind = 'dropper' | 'pump' | 'jar' | 'tube';
+
+const esc = (s: string): string =>
+  String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 /* ---------- bottle / jar / tube vector builders (centered ~x=600) ---------- */
-function packaging(kind, accent) {
+function packaging(kind: PackagingKind, accent: string): string {
   const glass = `${accent}`;
   switch (kind) {
     case 'dropper':
@@ -51,7 +60,7 @@ function packaging(kind, accent) {
   }
 }
 
-function labelBand(name, sub) {
+function labelBand(name: string, sub: string): string {
   return `
     <rect x="470" y="740" width="260" height="250" rx="18" fill="${C.white}"/>
     <text x="600" y="800" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="20" letter-spacing="4" fill="${C.stone}">AURELLE</text>
@@ -60,7 +69,16 @@ function labelBand(name, sub) {
     <text x="600" y="930" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="19" letter-spacing="1" fill="${C.stone}">${esc(sub)}</text>`;
 }
 
-function productSVG({ kind, accent, name, sub, bg, w = 1200, h = 1500 }) {
+interface ProductSVGOpts {
+  kind: PackagingKind;
+  accent: string;
+  name: string;
+  sub: string;
+  bg: string;
+  w?: number;
+  h?: number;
+}
+function productSVG({ kind, accent, name, sub, bg, w = 1200, h = 1500 }: ProductSVGOpts): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 1200 1500">
     <defs>
       <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0">
@@ -77,9 +95,16 @@ function productSVG({ kind, accent, name, sub, bg, w = 1200, h = 1500 }) {
   </svg>`;
 }
 
-function textureSVG({ accent, name, w = 1200, h = 1500 }) {
-  const blob = (cx, cy, r, fill, op) => `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" opacity="${op}"/>`;
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 1200 1500">
+interface TextureSVGOpts {
+  accent: string;
+  name: string;
+  w?: number;
+  h?: number;
+}
+function textureSVG({ accent, name }: TextureSVGOpts): string {
+  const blob = (cx: number, cy: number, r: number, fill: string, op: number): string =>
+    `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" opacity="${op}"/>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
     <rect width="1200" height="1500" fill="${C.cream}"/>
     ${blob(600, 700, 360, accent, 0.16)}
     ${blob(470, 560, 120, accent, 0.55)}
@@ -92,7 +117,12 @@ function textureSVG({ accent, name, w = 1200, h = 1500 }) {
   </svg>`;
 }
 
-function collectionSVG({ title, accent, kind }) {
+interface CollectionSVGOpts {
+  title: string;
+  accent: string;
+  kind: PackagingKind;
+}
+function collectionSVG({ title, accent, kind }: CollectionSVGOpts): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 1200 1500">
     <defs><linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0.25"/><stop offset="1" stop-color="#000" stop-opacity="0.1"/></linearGradient></defs>
     <rect width="1200" height="1500" fill="${C.sageSoft}"/>
@@ -102,8 +132,9 @@ function collectionSVG({ title, accent, kind }) {
   </svg>`;
 }
 
-function kitSVG(bg) {
-  const mini = (tx, ty, sc, kind, accent) => `<g transform="translate(${tx},${ty}) scale(${sc})">${packaging(kind, accent)}</g>`;
+function kitSVG(bg: string): string {
+  const mini = (tx: number, ty: number, sc: number, kind: PackagingKind, accent: string): string =>
+    `<g transform="translate(${tx},${ty}) scale(${sc})">${packaging(kind, accent)}</g>`;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
     <defs><linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0.28"/><stop offset="0.25" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.1"/></linearGradient></defs>
     <rect width="1200" height="1500" fill="${bg}"/>
@@ -117,7 +148,7 @@ function kitSVG(bg) {
   </svg>`;
 }
 
-function heroSVG() {
+function heroSVG(): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
     <defs>
       <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${C.cream}"/><stop offset="1" stop-color="${C.sageSoft}"/></linearGradient>
@@ -130,11 +161,16 @@ function heroSVG() {
   </svg>`;
 }
 
-function storySVG() {
-  return textureSVG({ accent: C.sage, name: 'Clean Science' }).replace('1200" height="1500"', '1200" height="1200"').replace('viewBox="0 0 1200 1500"', 'viewBox="0 0 1200 1200"').replace(/cy="700"/, 'cy="560"').replace(/y="1230"/, 'y="1000"').replace(/y="1290"/, 'y="1060"');
+function storySVG(): string {
+  return textureSVG({ accent: C.sage, name: 'Clean Science' })
+    .replace('1200" height="1500"', '1200" height="1200"')
+    .replace('viewBox="0 0 1200 1500"', 'viewBox="0 0 1200 1200"')
+    .replace(/cy="700"/, 'cy="560"')
+    .replace(/y="1230"/, 'y="1000"')
+    .replace(/y="1290"/, 'y="1060"');
 }
 
-function logoSVG({ light = false } = {}) {
+function logoSVG({ light = false }: { light?: boolean } = {}): string {
   const fg = light ? C.ivory : C.ink;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="720" height="220" viewBox="0 0 720 220">
     <g transform="translate(60,40)">
@@ -146,7 +182,7 @@ function logoSVG({ light = false } = {}) {
   </svg>`;
 }
 
-function faviconSVG() {
+function faviconSVG(): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
     <rect width="512" height="512" rx="110" fill="${C.ink}"/>
     <path d="M300 360 A130 130 0 0 1 170 230 C170 140 230 90 360 90 C360 220 300 320 200 340 Z" fill="${C.sage}"/>
@@ -155,20 +191,28 @@ function faviconSVG() {
 }
 
 /* ---------- product catalogue ---------- */
-const products = [
-  { handle: 'hydrating-hyaluronic-serum',  name: 'Hydrating Serum',  sub: 'Hyaluronic + B5',  kind: 'dropper', accent: '#BD6B4C', collection: 'hydration' },
-  { handle: 'vitamin-c-brightening-serum', name: 'Vitamin C Serum',  sub: '15% Brightening',  kind: 'dropper', accent: '#D98E3A', collection: 'brightening' },
-  { handle: 'gentle-gel-cleanser',         name: 'Gentle Cleanser',  sub: 'Daily Gel Wash',   kind: 'pump',    accent: '#9CAF95', collection: 'hydration' },
-  { handle: 'barrier-repair-moisturizer',  name: 'Barrier Cream',    sub: 'Ceramide Repair',  kind: 'jar',     accent: '#B98B6E', collection: 'barrier-repair' },
-  { handle: 'spf-50-mineral-sunscreen',    name: 'Mineral SPF 50',   sub: 'Daily Defense',    kind: 'tube',    accent: '#6E8FB9', collection: 'barrier-repair' }
+interface ProductSpec {
+  handle: string;
+  name: string;
+  sub: string;
+  kind: PackagingKind;
+  accent: string;
+  collection: string;
+}
+const products: ProductSpec[] = [
+  { handle: 'hydrating-hyaluronic-serum', name: 'Hydrating Serum', sub: 'Hyaluronic + B5', kind: 'dropper', accent: '#BD6B4C', collection: 'hydration' },
+  { handle: 'vitamin-c-brightening-serum', name: 'Vitamin C Serum', sub: '15% Brightening', kind: 'dropper', accent: '#D98E3A', collection: 'brightening' },
+  { handle: 'gentle-gel-cleanser', name: 'Gentle Cleanser', sub: 'Daily Gel Wash', kind: 'pump', accent: '#9CAF95', collection: 'hydration' },
+  { handle: 'barrier-repair-moisturizer', name: 'Barrier Cream', sub: 'Ceramide Repair', kind: 'jar', accent: '#B98B6E', collection: 'barrier-repair' },
+  { handle: 'spf-50-mineral-sunscreen', name: 'Mineral SPF 50', sub: 'Daily Defense', kind: 'tube', accent: '#6E8FB9', collection: 'barrier-repair' },
 ];
 
-async function write(path, svg, w, h) {
+async function write(path: string, svg: string, w: number, h: number): Promise<void> {
   await mkdir(dirname(path), { recursive: true });
   await sharp(Buffer.from(svg)).resize(w, h).png({ quality: 90 }).toFile(path);
   console.log('✓', path);
 }
-async function writePng(path, svg, w, h, transparent = false) {
+async function writePng(path: string, svg: string, _w: number, _h: number, transparent = false): Promise<void> {
   await mkdir(dirname(path), { recursive: true });
   let img = sharp(Buffer.from(svg));
   if (!transparent) img = img.flatten({ background: C.ivory });
@@ -178,7 +222,7 @@ async function writePng(path, svg, w, h, transparent = false) {
 
 const BASE = 'brand/images';
 
-async function main() {
+async function main(): Promise<void> {
   // products: 3 images each
   for (const p of products) {
     await write(`${BASE}/products/${p.handle}-1.png`, productSVG({ ...p, bg: C.cream }), 1200, 1500);
@@ -202,4 +246,7 @@ async function main() {
   await writePng(`${BASE}/favicon.png`, faviconSVG(), 512, 512, true);
   console.log('\nAll imagery generated in', BASE);
 }
-main().catch((e) => { console.error(e); process.exit(1); });
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
