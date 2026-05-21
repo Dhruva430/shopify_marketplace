@@ -16,7 +16,7 @@
 {%- else -%}
   <div class="card">
     <div class="{{ ratio }}">
-      {% render 'badge', product: product %}
+      {%- if settings.show_theme_badges -%}{% render 'badge', product: product %}{%- endif -%}
       <a href="{{ product.url }}" aria-label="{{ product.title | escape }}">
         {%- if product.featured_media -%}
           <img class="card__media--main" src="{{ product.featured_media | image_url: width: 600 }}"
@@ -45,7 +45,7 @@
         <div class="card__vendor">{{ product.vendor }}</div>
       {%- endif -%}
       <div class="card__title"><a href="{{ product.url }}">{{ product.title }}</a></div>
-      {%- if settings.show_rating -%}{% render 'rating-stars', product: product, show_count: true %}{%- endif -%}
+      {%- if settings.show_rating -%}<div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}"></div>{%- endif -%}
       {% render 'price', product: product %}
     </div>
   </div>

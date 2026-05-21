@@ -17,6 +17,7 @@
     "typecheck": "tsc --noEmit",
     "gen:images": "tsx scripts/gen-images.ts",
     "seed": "tsx scripts/seed-store.ts",
+    "pages": "tsx scripts/update-pages.ts",
     "images:real": "tsx scripts/set-real-images.ts",
     "check:csv": "tsx scripts/check-csv.ts"
   },

@@ -53,7 +53,7 @@ p{margin:0 0 1em}
   text-transform:uppercase;line-height:1;text-align:center;
 }
 .button:hover,.btn:hover{transform:translateY(-1px)}
-.button--primary,.btn--primary{background:var(--color-accent);color:var(--color-accent-text);box-shadow:0 14px 26px -14px var(--color-accent)}
+.button--primary,.btn--primary{background:var(--color-accent);color:var(--color-accent-text);box-shadow:0 8px 16px -16px var(--color-accent)}
 .button--primary:hover,.btn--primary:hover{background:var(--color-accent-dark)}
 .button--dark{background:var(--color-text);color:var(--color-bg)}
 .button--dark:hover{background:#000}

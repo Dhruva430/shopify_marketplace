@@ -184,6 +184,13 @@
         "id": "show_rating",
         "label": "Show star rating",
         "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_theme_badges",
+        "label": "Show built-in product badges",
+        "info": "Turn off if you use a labels app (e.g. Labeler) so labels aren't duplicated.",
+        "default": false
       }
     ]
   },
