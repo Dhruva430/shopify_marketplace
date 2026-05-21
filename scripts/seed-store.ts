@@ -576,10 +576,12 @@ async function seedMenus(): Promise<void> {
   ];
   const footer: MenuLink[] = [
     { title: 'About', url: '/pages/about' },
-    { title: 'FAQ', url: '/pages/faq' },
-    { title: 'Shipping & Returns', url: '/pages/shipping-returns' },
     { title: 'Privacy Policy', url: '/pages/privacy-policy' },
     { title: 'Terms of Service', url: '/pages/terms-of-service' },
+  ];
+  const help: MenuLink[] = [
+    { title: 'FAQ', url: '/pages/faq' },
+    { title: 'Shipping & Returns', url: '/pages/shipping-returns' },
     { title: 'Contact', url: '/pages/contact' },
   ];
   const toItems = (arr: MenuLink[]): Array<{ title: string; type: 'HTTP'; url: string }> =>
@@ -590,6 +592,7 @@ async function seedMenus(): Promise<void> {
     const menus: Array<[handle: string, title: string, items: MenuLink[]]> = [
       ['main-menu', 'Main menu', main],
       ['footer', 'Footer', footer],
+      ['help', 'Help', help],
     ];
     for (const [handle, title, items] of menus) {
       const existing = find(handle);
